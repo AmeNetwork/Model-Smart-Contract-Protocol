@@ -1,5 +1,21 @@
-# Model Smart Contract Protocol (MSCP)
-The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks.
+<div align="center">
+  <img src="./mscp_logo.svg" width="60" height="60" />
+  <p style="font-size:28px;font-weight:bold;">Model Smart Contract Protocol (MSCP)</p>
+  <p>The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
+
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+[![Powered by](https://img.shields.io/badge/powered_by-ame_network-8A2BE2)](https://ame.network)
+
+</div>
+
+
+
+
+> [!Warning]  
+> MSCP does not issue any tokens!  
+
+
 
 ## Features
 **Component as a service**  
@@ -22,7 +38,7 @@ Access component capabilities without permission, share onchain data, and provid
 
 
 ## Architecture
-![MSCP Architecture](./mscp-architecture.png)
+![MSCP Architecture](./mscp_architecture.png)
 
 ### MSCP consists of three parts:
 
