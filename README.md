@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./mscp_logo.svg" width="60" height="60" />
   <p style="font-size:28px;font-weight:bold;">Model Smart Contract Protocol (MSCP)</p>
-  <p>The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
+  <p>A standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
