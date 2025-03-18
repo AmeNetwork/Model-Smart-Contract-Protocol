@@ -69,8 +69,8 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
         ]
     )
 
-    # Supply model with results
+    # Model responds with final answer
     response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
 
-    # Model responds with final answer
+
     print(response.choices[0].message.content)
