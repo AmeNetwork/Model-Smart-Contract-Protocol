@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mscp"
+version = "0.0.1"
+description = "The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks."
+authors = [
+    {name = "rickey", email = "hello_rickey@163.com"},
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13.2"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "openai >= 1.63.2",
+    "web3 >= 7.8.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/AmeNetwork/Model-Smart-Contract-Protocol"
+"Bug Tracker" = "https://github.com/AmeNetwork/Model-Smart-Contract-Protocol/issues"
+
+
+[tool.setuptools]
+packages = ["mscp"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"mscp" = ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml"]
+
