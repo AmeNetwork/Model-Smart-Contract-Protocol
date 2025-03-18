@@ -23,7 +23,7 @@ Access component capabilities without permission, share onchain data, and provid
 
 ## Architecture
 
-![image](architecture.png)
+![](./architecture.png)
 
 ### MSCP consists of three parts:
 
