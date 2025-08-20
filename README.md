@@ -61,17 +61,6 @@ Please refer to `.env.example` file, and create a `.env` file with your own sett
 
 Here is a simple component [example.sol](./component/Example.sol) that you can deploy on any network.
 
-More about components:
-
-- [EIP-7654](https://eips.ethereum.org/EIPS/eip-7654)
-- [Use MSCP in aser agent](https://github.com/AmeNetwork/aser/blob/main/examples/agent_mscp.py)
-- [Component example deployed on multiple networks](https://github.com/AmeNetwork/ame/blob/main/contracts/Components/Example/README.md#network)
-- [Component Scan is a tool for interaction](https://scan.ame.network/)
-- [Some component contract codes](https://github.com/AmeNetwork/ame/tree/main/contracts/Components)
-- [How to build a component](https://docs.ame.network/ame-component-eip7654)
-- [Component Javascript SDK](https://github.com/AmeNetwork/ame-sdk)
-
-
 ### Integrate MSCP into your AI application
 
 ```python
