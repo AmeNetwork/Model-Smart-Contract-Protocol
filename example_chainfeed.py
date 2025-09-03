@@ -8,7 +8,7 @@ load_dotenv()
 # Create a connector to connect to the component
 component = Connector(
     "http://127.0.0.1:8545",  # RPC of the component network
-    "0x6A78793b4843FB48B167464C4d136a702874820F",  # component address
+    "0x5b38CE75E7F755A2F6Fb4915C8A52B2d87Fd8ea0",  # component address
 )
 
 # Get the methods of the component

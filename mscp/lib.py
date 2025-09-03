@@ -1,3 +1,4 @@
+import string
 def solidity_to_openai_type(solidity_type):
     base_type = solidity_type.rstrip("[]")
     is_array = solidity_type.endswith("[]")
@@ -21,6 +22,28 @@ def solidity_to_openai_type(solidity_type):
         return "object"
 
     return "string"
+
+
+def parse_method_to_function(methods):
+    functions = []
+    for method in methods:
+        properties = {}
+        for index in range(len(method["req"])):
+            properties[string.ascii_letters[index]] = {}
+            properties[string.ascii_letters[index]]["type"] = solidity_to_openai_type(
+                method["req"][index]
+            )
+        function = {
+            "type": "function",
+            "function": {
+                "name": method["name"],
+                "description": method["instruction"],
+                "parameters": {"type": "object", "properties": properties},
+            },
+        }
+        functions.append(function)
+    return functions
+
 
 def get_data_types(index):
     types = [

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mscp"
-version = "0.0.1"
+version = "0.1.1"
 description = "The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks."
 authors = [
     {name = "rickey", email = "hello_rickey@163.com"},

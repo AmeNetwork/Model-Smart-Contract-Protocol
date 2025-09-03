@@ -1,74 +1,46 @@
-import string
-import json
 from eth_abi import encode, decode
 from mscp.connector import Connector
-from mscp.lib import solidity_to_openai_type
+from mscp.lib import parse_method_to_function
+
 
 class Chat2Web3:
-    def __init__(self,account):
-        self.account=account
-        self.methods = []
+    def __init__(self, connectors):
         self.functions = []
-        self.account = account 
-        
-    def add(self, name, prompt, method):
+        self.methods = []
+        self.connectors = {}
+        self.support_connector = ["eip7654"]
+        for connector in connectors:
+            self.add(connector)
 
-        evm_component_method = {
-            "name": name,
-            "description": prompt,
-            "method": method,
-        }
-        self.methods.append(evm_component_method)
-        properties = {}
-        for index in range(len(method["req"])):
-            properties[string.ascii_letters[index]] = {}
-            properties[string.ascii_letters[index]]["type"] = solidity_to_openai_type(
-                method["req"][index]
-            )
-        function = {
-            "type": "function",
-            "function": {
-                "name": name,
-                "description": prompt,
-                "parameters": {"type": "object", "properties": properties},
-            },
-        }
-        self.functions.append(function)
+    def add(self, connector):
+        if connector.type not in self.support_connector:
+            return None
+        else:
+            connector_id = len(self.connectors)
+            self.connectors[connector_id] = {}
+            self.connectors[connector_id]["connector"] = connector
+            functions = connector.get_functions()
+            self.functions.extend(functions)
+            self.connectors[connector_id]["functions"] = functions
+            return connector_id
+
+    def get_connector_by_id(self, connector_id):
+        return self.connectors[connector_id]["connector"]
+
+    def get_connector_by_function_name(self, function_name):
+        for connector_index in self.connectors:
+            for function in self.connectors[connector_index]["functions"]:
+                if function["function"]["name"] == function_name:
+                    return self.connectors[connector_index]["connector"]
+        return None
+
+    def has(self, function_name):
+        return any(item["function"]["name"] == function_name for item in self.functions)
 
     def call(self, function):
-        method_data_values = list(json.loads(function.arguments).values())
 
-        method = [item for item in self.methods if item["name"] == function.name][0]
+        connector = self.get_connector_by_function_name(function.name)
 
-        method_data_types = method["method"]["req"]
+        response = connector.call_function(function)
 
-        encoded = "0x" + encode(method_data_types, method_data_values).hex()
-
-        component = Connector(
-            method["method"]["rpc"],
-            method["method"]["address"],
-        )
-        method_response = component.send(
-            type=method["method"]["type"],
-            name=method["method"]["name"],
-            params=encoded,
-            value=0,
-            account=self.account,
-        )
-
-        result = ""
-        if method["method"]["type"] == "get":
-            decoded = decode(method["method"]["res"], method_response)
-            result = ",".join(map(str, decoded))
-        else:
-            result = "show tx hash to user" + "0x" + method_response
-
-        return result
-
-
-    def has(self,function_name):
-        return any(item['name'] == function_name for item in self.methods)
-
-
-
-        
+        return response

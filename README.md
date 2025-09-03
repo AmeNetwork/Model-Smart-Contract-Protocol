@@ -3,17 +3,12 @@
   <h1>Model Smart Contract Protocol (MSCP)</h1>
   <p>A standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 [![Powered by](https://img.shields.io/badge/powered_by-ame_network-8A2BE2)](https://ame.network)
 
 </div>
 
-
-
-
-> [!Warning]  
-> MSCP does not issue any tokens!  
 
 
 
@@ -72,27 +67,14 @@ import os
 
 load_dotenv()
 # Create a connector to connect to the component
-component = Connector(
-    "https://sepolia.base.org",  # RPC of the component network
-    "0xd08dC2590B43bbDA7bc1614bDf80877EffE72CF0",  # component address
+component_connector = Connector(
+    "http://localhost:8545",  # RPC of the component network
+    "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  # component address
+    Account.from_key(os.getenv("EVM_PRIVATE_KEY")),
 )
-
-# Get the methods of the component
-methods = component.get_methods()
-
-
-#Import the private key from the environment variable
-account = Account.from_key(os.getenv("EVM_PRIVATE_KEY"))
 
 # Create a Chat2Web3 instance
-chat2web3 = Chat2Web3(account)
-
-# Add a method to the Chat2Web3
-chat2web3.add(
-    name="getUserInfoByAddress",
-    prompt="When a user wants to get a user's name and age, it will return 2 values: one is the name, and the other is the age.",
-    method=methods["getUser"],  # Use the getUser method from the contract
-)
+chat2web3 = Chat2Web3([component_connector])
 
 # Create a client for OpenAI
 client = OpenAI(api_key=os.getenv("OPENAI_KEY"), base_url=os.getenv("OPENAI_API_BASE"))
@@ -101,7 +83,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_KEY"), base_url=os.getenv("OPENAI_API_
 messages = [
     {
         "role": "user",
-        "content": "What is the user's name and age? 0xbdbf9715aedc12712daac033d4952280d1d29ac3",
+        "content": "What is the user's name and age? 0x8241b5b254e47798E8cD02d13B8eE0C7B5f2a6fA",
     }
 ]
 
@@ -140,9 +122,24 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
 
     print(response.choices[0].message.content)
 
+
 ```
 
+### Use MSCP in the aser agent
+```python
 
+component_connector = Connector(
+    "http://127.0.0.1:8545",
+    "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  
+    Account.from_key(os.getenv("EVM_PRIVATE_KEY")) 
+)
+chat2web3 = Chat2Web3([component_connector])
+agent=Agent(name="chat2web3",model="gpt-4o",chat2web3=chat2web3)
+response = agent.chat("What is the user's name and age?0x8241b5b254e47798E8cD02d13B8eE0C7B5f2a6fA")
+
+print(response)
+
+```
 
 
 
