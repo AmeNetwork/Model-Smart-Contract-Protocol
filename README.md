@@ -9,9 +9,6 @@
 
 </div>
 
-
-
-
 ## Features
 **Component as a service**  
 AI Agent interacts with the network by operating different components.
@@ -128,18 +125,48 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
 ### Use MSCP in the aser agent
 ```python
 
+# Create a Connector instance for the component
 component_connector = Connector(
-    "http://127.0.0.1:8545",
-    "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  
-    Account.from_key(os.getenv("EVM_PRIVATE_KEY")) 
+    "http://127.0.0.1:8545",  # RPC URL
+    "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  # component contract address
+    Account.from_key(os.getenv("EVM_PRIVATE_KEY"))  # Load account from private key in environment variable
 )
+
+# Initialize Chat2Web3 with the component connector
 chat2web3 = Chat2Web3([component_connector])
-agent=Agent(name="chat2web3",model="gpt-4o",chat2web3=chat2web3)
+
+# Create an Agent instance with chat2web3
+agent = Agent(name="chat2web3", model="gpt-4o", chat2web3=chat2web3)
+
+# Use the agent to chat and get the user's name and age by passing an address
 response = agent.chat("What is the user's name and age?0x8241b5b254e47798E8cD02d13B8eE0C7B5f2a6fA")
 
+# Print the response from the agent
 print(response)
 
 ```
+
+### Non-component contract connector
+Developers can implement interface abstraction to customize different connectors
+```python
+from abc import ABC, abstractmethod
+
+class AbstractConnector(ABC):
+    def __init__(self, rpc, address, account, type):
+        self.rpc = rpc
+        self.address = address
+        self.account = account
+        self.type = type
+
+    @abstractmethod
+    def call_function(self, function):
+        pass
+
+    @abstractmethod
+    def get_functions(self):
+        pass
+```
+
 
 
 
