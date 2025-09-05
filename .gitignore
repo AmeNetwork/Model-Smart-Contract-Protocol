@@ -176,6 +176,8 @@ cython_debug/
 
 # Local Database
 data/*
+local
 
 #Mac DS Store
 .DS_Store
+
