@@ -3,7 +3,7 @@
   <h1>Model Smart Contract Protocol (MSCP)</h1>
   <p>A standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
 
-![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 [![Powered by](https://img.shields.io/badge/powered_by-ame_network-8A2BE2)](https://ame.network)
 
@@ -148,6 +148,15 @@ print(response)
 ```
 
 ### Non-component contract connector
+
+In addition to using Component components, developers can customize Connector functions to adapt to different contracts.
+Please refer to the following steps:
+
+**1. Depoly Your Contract**.  
+Deploy your custom contract. Here is a [NonComponentContract.sol](./component/NonComponentContract.sol) as example that you can deploy directly.   
+
+
+**2. Implement the Connector**.  
 Developers can implement interface abstraction to customize different connectors
 ```python
 from abc import ABC, abstractmethod
@@ -167,7 +176,15 @@ class AbstractConnector(ABC):
     def get_functions(self):
         pass
 ```
+You can refer to the [custom_connector](./custom_connector.py).
 
+**3. Add the Connector to Chat2Web3**.  
+Add the implemented connector to the Chat2Web3 instance.
+
+```python
+chat2web3 = Chat2Web3([custom_connector])
+```
+You can refer to the [custom_connector_example](./custom_connector.py).
 
 
 

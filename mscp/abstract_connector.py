@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 class AbstractConnector(ABC):
     def __init__(self, rpc, address, account, type):
         self.rpc = rpc

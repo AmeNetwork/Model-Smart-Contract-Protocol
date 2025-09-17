@@ -1,6 +1,5 @@
 from eth_abi import encode, decode
 from mscp.connector import Connector
-from mscp.lib import parse_method_to_function
 
 
 class Chat2Web3:
@@ -8,21 +7,17 @@ class Chat2Web3:
         self.functions = []
         self.methods = []
         self.connectors = {}
-        self.support_connector = ["eip7654"]
         for connector in connectors:
             self.add(connector)
 
     def add(self, connector):
-        if connector.type not in self.support_connector:
-            return None
-        else:
-            connector_id = len(self.connectors)
-            self.connectors[connector_id] = {}
-            self.connectors[connector_id]["connector"] = connector
-            functions = connector.get_functions()
-            self.functions.extend(functions)
-            self.connectors[connector_id]["functions"] = functions
-            return connector_id
+        connector_id = len(self.connectors)
+        self.connectors[connector_id] = {}
+        self.connectors[connector_id]["connector"] = connector
+        functions = connector.get_functions()
+        self.functions.extend(functions)
+        self.connectors[connector_id]["functions"] = functions
+        return connector_id
 
     def get_connector_by_id(self, connector_id):
         return self.connectors[connector_id]["connector"]
