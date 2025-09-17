@@ -123,6 +123,7 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
 ```
 
 ### Use MSCP in the aser agent
+Learn more about aser agent [here](https://github.com/ame-network/aser-agent).
 ```python
 
 # Create a Connector instance for the component
