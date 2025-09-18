@@ -1,7 +1,3 @@
-from eth_abi import encode, decode
-from mscp.connector import Connector
-
-
 class Chat2Web3:
     def __init__(self, connectors):
         self.functions = []

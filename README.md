@@ -34,11 +34,11 @@ Access component capabilities without permission, share onchain data, and provid
 
 ### MSCP consists of three parts:
 
-**Component:** This is an on-chain component that complies with [EIP-7654](https://eips.ethereum.org/EIPS/eip-7654). It is used to implement the specific functions of the contract and provide custom services.
+**Component:** This is a smart contract that complies with [EIP-7654](https://eips.ethereum.org/EIPS/eip-7654). 
 
-**Connector:** This is a method and specification for parsing Components and processing contract component requests.
+**Connector:** This is used to establish a connection with a component and convert its methods into tool functions that can be interacted with by the LLM.
 
-**Chat2Web3:** This is an interoperator, which is used to automatically convert the interaction methods of contract components into tool functions that LLM can call. ​
+**Chat2Web3:** This is a router that dynamically calls the connector based on the response from the LLM.
 
 ## Quick Start
 ### Install
