@@ -1,9 +1,16 @@
-from openai import OpenAI
+
+
 from eth_account import Account
 from mscp import Chat2Web3
 from custom_connector import CustomConnector
 from dotenv import load_dotenv
 import os
+try:
+    from openai import OpenAI
+except ImportError:
+    raise ImportError(
+            "you need to install openai, please run `pip install openai`"
+        )
 
 load_dotenv()
 # Create a connector to connect to the component
@@ -40,8 +47,6 @@ response = client.chat.completions.create(**params)
 # Get the function message
 func_msg = response.choices[0].message
 
-print(func_msg)
-
 # fliter out chat2web3 function
 if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
 
@@ -60,7 +65,7 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
     )
 
     # Model responds with final answer
-    response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
+    response = client.chat.completions.create(model="gpt-4o", messages=messages)
 
     print(response.choices[0].message.content)
 

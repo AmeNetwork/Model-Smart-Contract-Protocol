@@ -3,7 +3,7 @@
   <h1>Model Smart Contract Protocol (MSCP)</h1>
   <p>A standard protocol that enables LLM applications to interact with EVM-compatible networks.</p>
 
-![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.3-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 [![Powered by](https://img.shields.io/badge/powered_by-ame_network-8A2BE2)](https://ame.network)
 
@@ -34,16 +34,18 @@ Access component capabilities without permission, share onchain data, and provid
 
 ### MSCP consists of three parts:
 
-**Component:** This is a smart contract that complies with [EIP-7654](https://eips.ethereum.org/EIPS/eip-7654). 
+**Component:** This is a smart contract that complies with [ERC-7654](https://eips.ethereum.org/EIPS/eip-7654). 
 
-**Connector:** This is used to establish a connection with a component and convert its methods into tool functions that can be interacted with by the LLM.
+**Connectors:** This is used to establish a connection with a component and convert its methods into tool functions that can be interacted with by the LLM.  
+In addition, it supports customization, you can customize different Connectors according to different smart contracts.
+
 
 **Chat2Web3:** This is a router that dynamically calls the connector based on the response from the LLM.
 
 ## Quick Start
 ### Install
 ```shell
-pip3 install mscp
+pip install mscp
 ```
 
 ### Set up environment variables
@@ -51,20 +53,21 @@ Please refer to `.env.example` file, and create a `.env` file with your own sett
 
 ### Deploy Component Smart Contract
 
-Here is a simple component [example.sol](./component/Example.sol) that you can deploy on any network.
+Here is a simple component [example.sol](./contracts/Example.sol) that you can deploy on any network.
 
 ### Integrate MSCP into your AI application
 
 ```python
 from openai import OpenAI
 from eth_account import Account
-from mscp import Connector, Chat2Web3
+from mscp import Chat2Web3
+from mscp.connectors import ERC7654Connector
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 # Create a connector to connect to the component
-component_connector = Connector(
+component_connector = ERC7654Connector(
     "http://localhost:8545",  # RPC of the component network
     "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  # component address
     Account.from_key(os.getenv("EVM_PRIVATE_KEY")),
@@ -119,13 +122,12 @@ if func_msg.tool_calls and chat2web3.has(func_msg.tool_calls[0].function.name):
 
     print(response.choices[0].message.content)
 
-
 ```
 
-### Use MSCP in the aser agent
-Learn more about aser agent [here](https://github.com/ame-network/aser-agent).
+## Integrations
+### Integrate MSCP into Aser Agent
+Aser is a minimalist, modular, and versatile AI agent framework. You can assemble an agent with just a few lines of code. Learn more about aser agent [here](https://github.com/ame-network/aser-agent).
 ```python
-
 # Create a Connector instance for the component
 component_connector = Connector(
     "http://127.0.0.1:8545",  # RPC URL
@@ -147,13 +149,13 @@ print(response)
 
 ```
 
-### Non-component contract connector
+### Integrate smart contracts through Custom Connector
 
-In addition to using Component components, developers can customize Connector functions to adapt to different contracts.
+Developers can customize Connector functions to adapt to different contracts.
 Please refer to the following steps:
 
 **1. Depoly Your Contract**.  
-Deploy your custom contract. Here is a [NonComponentContract.sol](./component/NonComponentContract.sol) as example that you can deploy directly.   
+Deploy your custom contract. Here is a [CustomConnectorContract.sol](./contracts/CustomConnectorContract.sol) as example that you can deploy directly.   
 
 
 **2. Implement the Connector**.  
@@ -185,6 +187,53 @@ Add the implemented connector to the Chat2Web3 instance.
 chat2web3 = Chat2Web3([custom_connector])
 ```
 You can refer to the [custom_connector_example](./custom_connector.py).
+
+### Integrate ERC8004 Connector
+ERC8004 is a standard interface for smart contracts that enables agents to discover and and establish trust through reputation and validation.  
+
+- [ERC8004](https://eips.ethereum.org/EIPS/eip-8004)  
+- [ERC8004 Smart Contracts by ChaosChain](https://github.com/ChaosChain/chaoschain-genesis-studio/tree/main/contracts/src) 
+- [ERC8004 Identity Connector](./mscp/connectors/erc8004.py)
+
+This example demonstrates agent identity registration
+```python
+from aser import Agent
+from mscp import Chat2Web3
+from mscp.connectors.erc8004 import ERC8004IdentityConnector
+from eth_account import Account
+import os
+
+# Load account from environment variable
+account = Account.from_key(os.getenv("EVM_PRIVATE_KEY"))
+
+# Initialize ERC8004 identity connector with RPC, contract address, and account
+identity_connector = ERC8004IdentityConnector(
+    "http://127.0.0.1:8545",
+    "0x8e0E422Ad7BdAbB4e90Edfdd0424039434e38e42",
+    account
+)
+
+# Create Chat2Web3 instance with the identity connector
+chat2web3 = Chat2Web3([identity_connector])
+
+# Create an Agent instance, specifying name, model, and chat2web3
+agent = Agent(name="chat2web3", model="gpt-4o", chat2web3=chat2web3)
+
+# Send a chat request to create a new agent with domain and address info
+response = agent.chat(
+    f"""
+    create a newAgent
+    agentDomain: http://www.ame.network
+    agentAddress: {account.address}
+    """
+)
+
+# Print the response from the agent
+print(response)
+
+```
+
+
 
 
 

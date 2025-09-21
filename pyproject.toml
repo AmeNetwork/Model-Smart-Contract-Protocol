@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mscp"
-version = "0.1.2"
+version = "0.1.3"
 description = "The Model Smart Contract Protocol (MSCP) is a standard protocol that enables LLM applications to interact with EVM-compatible networks."
 authors = [
     {name = "rickey", email = "hello_rickey@163.com"},
@@ -18,7 +18,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "openai >= 1.63.2",
     "web3 >= 7.8.0",
     "python-dotenv >= 1.0.1"
 ]

@@ -1,179 +1,23 @@
 import json
+import os
 from mscp.lib import get_data_types, parse_method_to_function
 from eth_abi import encode, decode
 from web3 import Web3
 
 
-class Connector:
-    def __init__(self, rpc, address, account, type="eip7654"):
+class ERC7654Connector:
+    def __init__(self, rpc, address, account, name="erc7654"):
         self.rpc = rpc
         self.address = address
         self.web3 = Web3(Web3.HTTPProvider(rpc))
         self.account = account
-        self.type = type
-        abi = """[
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "_response",
-				"type": "bytes"
-			}
-		],
-		"name": "Response",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_methodName",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_methodReq",
-				"type": "bytes"
-			}
-		],
-		"name": "get",
-		"outputs": [
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_methodName",
-				"type": "string"
-			}
-		],
-		"name": "getMethodInstruction",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_methodName",
-				"type": "string"
-			}
-		],
-		"name": "getMethodReqAndRes",
-		"outputs": [
-			{
-				"internalType": "enum Types.Type[]",
-				"name": "",
-				"type": "uint8[]"
-			},
-			{
-				"internalType": "enum Types.Type[]",
-				"name": "",
-				"type": "uint8[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum IComponent.MethodTypes",
-				"name": "_methodTypes",
-				"type": "uint8"
-			}
-		],
-		"name": "getMethods",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "options",
-		"outputs": [
-			{
-				"internalType": "enum IComponent.MethodTypes[]",
-				"name": "",
-				"type": "uint8[]"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_methodName",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_methodReq",
-				"type": "bytes"
-			}
-		],
-		"name": "post",
-		"outputs": [
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_methodName",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_methodReq",
-				"type": "bytes"
-			}
-		],
-		"name": "put",
-		"outputs": [
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	}
-]"""
-        self.contract = self.web3.eth.contract(address=address, abi=abi)
+        self.name = name
+        # Get the directory of this module and construct the ABI file path
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        abi_path = os.path.join(current_dir, "abis", "erc7654.json")
+        with open(abi_path, "r") as f:
+            abi = json.load(f)
+        self.contract = self.web3.eth.contract(address=self.address, abi=abi)
         self.methods = self.get_methods()
 
     def call_function(self, function):

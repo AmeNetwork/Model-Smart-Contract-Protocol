@@ -1,12 +1,13 @@
 from openai import OpenAI
 from eth_account import Account
-from mscp import Connector, Chat2Web3
+from mscp import Chat2Web3
+from mscp.connectors import ERC7654Connector
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 # Create a connector to connect to the component
-component_connector = Connector(
+component_connector = ERC7654Connector(
     "http://localhost:8545",  # RPC of the component network
     "0x0E2b5cF475D1BAe57C6C41BbDDD3D99ae6Ea59c7",  # component address
     Account.from_key(os.getenv("EVM_PRIVATE_KEY")),

@@ -257,7 +257,7 @@ def abi_to_openai_type(abi: str, abi_function_name: str, description: str):
 
     try:
 
-        abi_data = json.loads(abi)
+        abi_data = abi
 
         target_function = None
         for item in abi_data:

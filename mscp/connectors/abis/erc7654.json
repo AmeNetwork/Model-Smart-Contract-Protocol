@@ -1,0 +1,162 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "_response",
+				"type": "bytes"
+			}
+		],
+		"name": "Response",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_methodName",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_methodReq",
+				"type": "bytes"
+			}
+		],
+		"name": "get",
+		"outputs": [
+			{
+				"internalType": "bytes",
+				"name": "",
+				"type": "bytes"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_methodName",
+				"type": "string"
+			}
+		],
+		"name": "getMethodInstruction",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_methodName",
+				"type": "string"
+			}
+		],
+		"name": "getMethodReqAndRes",
+		"outputs": [
+			{
+				"internalType": "enum Types.Type[]",
+				"name": "",
+				"type": "uint8[]"
+			},
+			{
+				"internalType": "enum Types.Type[]",
+				"name": "",
+				"type": "uint8[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "enum IComponent.MethodTypes",
+				"name": "_methodTypes",
+				"type": "uint8"
+			}
+		],
+		"name": "getMethods",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "options",
+		"outputs": [
+			{
+				"internalType": "enum IComponent.MethodTypes[]",
+				"name": "",
+				"type": "uint8[]"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_methodName",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_methodReq",
+				"type": "bytes"
+			}
+		],
+		"name": "post",
+		"outputs": [
+			{
+				"internalType": "bytes",
+				"name": "",
+				"type": "bytes"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_methodName",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_methodReq",
+				"type": "bytes"
+			}
+		],
+		"name": "put",
+		"outputs": [
+			{
+				"internalType": "bytes",
+				"name": "",
+				"type": "bytes"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	}
+]
