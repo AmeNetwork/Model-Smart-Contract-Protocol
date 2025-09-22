@@ -28,13 +28,13 @@ class ERC8004IdentityConnector(AbstractConnector):
                 register_info = self.contract.functions.resolveByAddress(
                     args["agentAddress"]).call()
 
-                response = {
-                    "id": register_info[0],
-                    "domain": register_info[1],
-                    "address": register_info[2]
-                }
+                response = f"""
+                    id: {register_info[0]},
+                    domain: {register_info[1]},
+                    address: {register_info[2]}
+                """
 
-                return json.dumps(response)
+                return response
             except ContractLogicError as e:
                 register_info = self.send_transaction(
                     function.name, args, "AgentRegistered")
@@ -44,12 +44,12 @@ class ERC8004IdentityConnector(AbstractConnector):
                 register_info = self.contract.functions.resolveByAddress(
                     args["agentAddress"]).call()
 
-                response = {
-                    "id": register_info[0],
-                    "domain": register_info[1],
-                    "address": register_info[2]
-                }
-                return json.dumps(response)
+                response = f"""
+                    id: {register_info[0]},
+                    domain: {register_info[1]},
+                    address: {register_info[2]}
+                """
+                return response
             except ContractLogicError as e:
                 return str("You have not registered this agent")
 
